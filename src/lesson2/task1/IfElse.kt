@@ -5,6 +5,7 @@ package lesson2.task1
 import lesson1.task1.discriminant
 import kotlin.math.max
 import kotlin.math.sqrt
+import kotlin.math.*
 
 // Урок 2: ветвления (здесь), логический тип (см. 2.2).
 // Максимальное количество баллов = 6
@@ -81,7 +82,18 @@ fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
     t3: Double, v3: Double
-): Double = TODO()
+): Double {
+    val halfWay: Double = (t1 * v1 + t2 * v2 + t3 * v3) / 2
+    return if (t1 * v1 >= halfWay) {
+        halfWay / v1
+    } else {
+        if (t1 * v1 + t2 * v2 >= halfWay)
+            t1 + (halfWay - t1 * v1) / v2
+        else {
+            t1 + t2 + (halfWay - t1 * v1 - t2 * v2) / v3
+        }
+    }
+}
 
 /**
  * Простая (2 балла)
@@ -96,8 +108,18 @@ fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
-): Int = TODO()
-
+): Int {
+    var isFirstRook = 0
+    var isSecondRook = 0
+    if ((kingX == rookX1) || (kingY == rookY1)) isFirstRook += 1
+    if ((kingX == rookX2) || (kingY == rookY2)) isSecondRook += 1
+    return when{
+        isFirstRook + isSecondRook == 0 -> 0
+        isFirstRook * isSecondRook == 1 -> 3
+        isFirstRook == 1 -> 1
+        else -> 2
+    }
+}
 /**
  * Простая (2 балла)
  *
@@ -112,7 +134,18 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int = TODO()
+): Int {
+    var isRook = 0
+    var isBishop = 0
+    if ((kingX == rookX) || (kingY == rookY)) isRook += 1
+    if (abs(kingX - bishopX) == abs(kingY - bishopY)) isBishop += 1
+    return when{
+        isRook + isBishop == 0 -> 0
+        isRook * isBishop == 1 -> 3
+        isRook == 1 -> 1
+        else -> 2
+    }
+}
 
 /**
  * Простая (2 балла)
@@ -132,4 +165,14 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    return when {
+        (d < a) || (b < c) -> -1
+        (c >= a) && (d <= b) -> d - c
+        (c <= a) && (d >= b) -> b - a
+        (c <= a) -> d - a
+        else -> b - c
+
+
+    }
+}
